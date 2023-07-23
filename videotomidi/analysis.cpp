@@ -76,8 +76,7 @@ void Analysis::Set_Coodinates() {
             key_x[num] = key_white_x[white];
             white++;
             cout << num << "w";
-        }
-        else {
+        } else {
             // 黒鍵
             key_x[num] = key_black_x[black];
             black++;
@@ -155,18 +154,18 @@ void Analysis::Check_Coodinates() {
     frame = movie.Get_Next_Frame();
 
     // 白鍵の座標を赤色の円で表示
-    for (const auto& e : this->key_white_x) {
+    for (const auto &e: this->key_white_x) {
         cout << e << endl;
         cv::circle(frame, cv::Point(e, this->key_white_y), 3, cv::Scalar(0, 0, 200), 3, 4);
     }
     // 黒鍵の座標を緑色の円で表示
-    for (const auto& e : this->key_black_x) {
+    for (const auto &e: this->key_black_x) {
         cout << e << endl;
         cv::circle(frame, cv::Point(e, this->key_black_y), 3, cv::Scalar(0, 200, 0), 3, 4);
     }
     int i = 0;
     // 88鍵盤全体の座標を黄色の円で表示
-    for (const auto& e : this->key_x) {
+    for (const auto &e: this->key_x) {
         cout << i << "^" << e;
         cv::circle(frame, cv::Point(e, this->key_black_y + 30), 3, cv::Scalar(255, 255, 0), 3, 4);
         i += 1;
@@ -184,8 +183,7 @@ bool Analysis::Change_Color_w(int b, int g, int r) {
 
     if (diff > threshold) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -196,8 +194,7 @@ bool Analysis::Change_Color_b(int b, int g, int r) {
 
     if (diff > threshold) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -219,8 +216,7 @@ void Analysis::Check_Key() {
                     this->Register_Event(key, 1);
                     key_event[key] = true;
                 }
-            }
-            else {
+            } else {
                 // 白鍵の色が元に戻ったとき
                 if (!Change_Color_w(Get_Color_b(x, y), Get_Color_g(x, y), Get_Color_r(x, y))) {
                     cout << "[" << key << "W:off]" << endl;
@@ -229,8 +225,7 @@ void Analysis::Check_Key() {
                     key_event[key] = false;
                 }
             }
-        }
-        else {
+        } else {
             // 黒鍵
             y = key_black_y;
             if (this->key_event[key] == false) {
@@ -241,8 +236,7 @@ void Analysis::Check_Key() {
                     this->Register_Event(key, 1);
                     key_event[key] = true;
                 }
-            }
-            else {
+            } else {
                 // 黒鍵の色が元に戻ったとき
                 if (!Change_Color_b(Get_Color_b(x, y), Get_Color_g(x, y), Get_Color_r(x, y))) {
                     cout << "[" << key << "B:off]" << endl;
