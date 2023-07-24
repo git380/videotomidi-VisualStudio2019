@@ -22,9 +22,7 @@ public:
 
         // オフセット分のフレームを飛ばす
         for (int i = 0; i < this->Get_FPS() * 3; i++) {
-            if (cur_frame_num < max_frame) {
-                cap >> img;
-            }
+            if (cur_frame_num < max_frame) cap >> img;
         }
     }
 
@@ -32,9 +30,7 @@ public:
 
     // 次のフレームを取得する関数
     Mat Get_Next_Frame() {
-        if (cur_frame_num < max_frame) {
-            cap >> img;
-        }
+        if (cur_frame_num < max_frame) cap >> img;
         return this->img;
     }
 
@@ -60,14 +56,15 @@ private:
 
     std::ostringstream pos_msec;// 時間情報を保持するための文字列ストリーム
 
-    // 白鍵の座標
-    int key_white_x[52];
-    int key_white_y;
-    // 黒鍵の座標
-    int key_black_x[36];
-    int key_black_y;
-
-    int key_x[88]; // 88鍵盤全体の座標を保持
+    // 座標の保持
+    // 白鍵
+    int key_white_y; // 縦軸
+    int key_white_x[52]; // 横軸
+    // 黒鍵
+    int key_black_y; // 縦軸
+    int key_black_x[36]; // 横軸
+    // 88鍵盤全体
+    int key_x[88];
 
     int active_key_sum = 0; // 画面変更の時の検知対策(変化量が多すぎると、書き出ししないフラグみたいな使い方)
 
@@ -88,16 +85,13 @@ private:
     int def_b_clrR;
 
     // 各鍵盤の座標のイベント状態（押されたかどうか）を保持する配列
-    bool key_w_event[52];// 白鍵
-    bool key_b_event[36];// 黒鍵
-
+    bool key_w_event[52]; // 白鍵
+    bool key_b_event[36]; // 黒鍵
     bool key_event[88]; // 88鍵盤全体のイベント状態を保持する配列
-
     bool key_active[88]; // 88鍵盤全体のアクティブ状態（押されている）かどうかを保持する配列
 
-    string str = "";// 1フレーム分を保持する文字列
-
-    string str_ = "";// その1フレーム分に問題がなければ、書き込み
+    string str = ""; // 1フレーム分を保持する文字列
+    string str_ = ""; // その1フレーム分に問題がなければ、書き込み
 
 public:
     Analysis(); // コンストラクタ

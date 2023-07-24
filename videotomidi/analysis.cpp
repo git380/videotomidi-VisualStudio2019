@@ -7,13 +7,13 @@ Analysis::Analysis() {
     this->Set_Color(); // 鍵盤が押されていない状態のRGB値を記録する関数の呼び出し
 
     // 各鍵盤のイベント（88鍵盤が押されたかどうか）のkey_event初期化
-    for (int i = 0; i < 52; i++) {//白鍵
+    for (int i = 0; i < 52; i++) { // 白鍵
         this->key_w_event[i] = false;
     }
-    for (int i = 0; i < 36; i++) {// 黒鍵
+    for (int i = 0; i < 36; i++) { // 黒鍵
         this->key_b_event[i] = false;
     }
-    for (int i = 0; i < 88; i++) {// 88鍵盤全体
+    for (int i = 0; i < 88; i++) { // 88鍵盤全体
         this->key_event[i] = false;
     }
 }
@@ -58,7 +58,7 @@ void Analysis::Set_Coodinates() {
             break;
         case 4: // #ラ
             def += W_2;
-            k = -1;// 1オクターブ分完了 黒鍵リセット
+            k = -1;// 1オクターブ分完了 黒鍵変数リセット
             break;
         }
         k++; // 次の黒鍵
@@ -69,7 +69,7 @@ void Analysis::Set_Coodinates() {
     int white = 0;
     int black = 0;
     for (int num = 0; num < 88; num++) {
-        if (this->True_White(num)) {// 白鍵か黒鍵かを判定し、対応するX座標を設定
+        if (this->True_White(num)) { // 白鍵か黒鍵かを判定し、対応するX座標を設定
             // 白鍵
             key_x[num] = key_white_x[white];
             white++;
@@ -123,15 +123,13 @@ void Analysis::Analyze() {
         // 同時発音数が一定以下でイベントを本登録
         if (str.size() > 0 && str.size() < 30) {
             cout << std::to_string(time_now) << endl;
-
             this->str_ += std::to_string(time_now);
             this->str_ += "ms";
             this->str_ += str;
             this->str_ += "\n";
         }
         str = "";
-
-        frame_count++;
+        frame_count++; // 処理が終わったのちに、次のフレームを追加する
         this->first_key = 0;
         this->active_key_sum = 0;
         cv::imshow("movie", frame);
@@ -175,22 +173,15 @@ void Analysis::Check_Coodinates() {
 bool Analysis::Change_Color_w(int b, int g, int r) {
     int diff = abs(b - def_w_clrB) + abs(g - def_w_clrG) + abs(r - def_w_clrR);
 
-    if (diff > threshold) {
-        return true;
-    } else {
-        return false;
-    }
+    if (diff > threshold) return true;
+    return false;
 }
-
 // 黒鍵
 bool Analysis::Change_Color_b(int b, int g, int r) {
     int diff = abs(b - def_b_clrB) + abs(g - def_b_clrG) + abs(r - def_b_clrR);
 
-    if (diff > threshold) {
-        return true;
-    } else {
-        return false;
-    }
+    if (diff > threshold) return true;
+    return false;
 }
 
 // キーのイベントをチェックする関数
@@ -245,20 +236,17 @@ void Analysis::Check_Key() {
 
 // 指定された座標の青色情報を取得する関数
 int Analysis::Get_Color_b(int x, int y) {
-    int b = frame.at<Vec3b>(y, x)[0];
-    return b;
+    return frame.at<Vec3b>(y, x)[0];
 }
 
 // 指定された座標の緑色情報を取得する関数
 int Analysis::Get_Color_g(int x, int y) {
-    int g = frame.at<Vec3b>(y, x)[1];
-    return g;
+    return frame.at<Vec3b>(y, x)[1];
 }
 
 // 指定された座標の赤色情報を取得する関数
 int Analysis::Get_Color_r(int x, int y) {
-    int r = frame.at<Vec3b>(y, x)[2];
-    return r;
+    return frame.at<Vec3b>(y, x)[2];
 }
 
 // 与えられたキー番号が白鍵かどうかを判定する関数
