@@ -91,7 +91,6 @@ void Analysis::Set_Coodinates() {
     // 720p 88鍵盤 の座標設定
     cout << "Mode = 720p 88 key" << endl;
 
-    // 鍵盤の座標設定
     // 白鍵
     // Y座標(鍵盤は、横に並んでいるので縦軸は変更なし)
     key_white_y = 665;
