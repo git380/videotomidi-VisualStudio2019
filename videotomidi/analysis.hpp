@@ -3,6 +3,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
+using namespace std;
 
 class Movie {
 private:
@@ -52,8 +53,6 @@ public:
         return this->cur_frame_num;
     }
 };
-
-using namespace std;
 
 class Analysis {
 private:

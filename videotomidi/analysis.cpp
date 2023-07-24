@@ -6,14 +6,14 @@ Analysis::Analysis() {
     this->Set_Coodinates(); // 鍵盤の座標を設定する関数の呼び出し
     this->Set_Color(); // 鍵盤が押されていない状態のRGB値を記録する関数の呼び出し
 
-    // 各鍵盤のイベント（押されたかどうか）のkey_event初期化
-    for (int i = 0; i < 52; i++) {
+    // 各鍵盤のイベント（88鍵盤が押されたかどうか）のkey_event初期化
+    for (int i = 0; i < 52; i++) {//白鍵
         this->key_w_event[i] = false;
     }
-    for (int i = 0; i < 36; i++) {
+    for (int i = 0; i < 36; i++) {// 黒鍵
         this->key_b_event[i] = false;
     }
-    for (int i = 0; i < 88; i++) {
+    for (int i = 0; i < 88; i++) {// 88鍵盤全体
         this->key_event[i] = false;
     }
 }
@@ -25,52 +25,50 @@ void Analysis::Set_Coodinates() {
     // 720p 88鍵盤 の座標設定
     cout << "Mode = 720p 88 key" << endl;
 
-    // 白鍵のY座標
+    // 白鍵
+    // Y座標(鍵盤は、横に並んでいるので縦軸は変更なし)
     this->key_white_y = 665;
-    // 白鍵の座標を計算
+    // X座標を計算
     for (int i = 0; i < 52; i++) {
         this->key_white_x[i] = (24.5 / 2.0) + i * 24.6;
     }
 
-    // 黒鍵のY座標
+    // 黒鍵
+    // Y座標(鍵盤は、横に並んでいるので縦軸は変更なし)
     this->key_black_y = 620;
-    // 黒鍵の座標を計算
-    this->key_black_x[0] = 28.5;
-
-    int k = 0;
-    int def = 27;
-    double W_1 = 43.2;
-    double W_2 = 29.3;
-
+    // X座標を計算
+    this->key_black_x[0] = 28.5; // 一番最初の黒鍵座標設定
+    int k = 0; // 1オクターブ分の黒鍵変数
+    int def = 27; // 黒鍵座標変数
+    double W_1 = 43.2; // 間に黒鍵がない
+    double W_2 = 29.3; // 間に黒鍵がある
     for (int i = 1; i < 36; i++) {
         switch (k) {
-        case 0:
+        case 0: // #ド
             def += W_1;
             break;
-        case 1:
+        case 1: // #レ
             def += W_2;
             break;
-        case 2:
+        case 2: // #ファ
             def += W_1;
             break;
-        case 3:
+        case 3: // #ソ
             def += W_2;
             break;
-        case 4:
+        case 4: // #ラ
             def += W_2;
-            k = -1;
+            k = -1;// 1オクターブ分完了 黒鍵リセット
             break;
         }
-        k++;
-        this->key_black_x[i] = def;
+        k++; // 次の黒鍵
+        this->key_black_x[i] = def; // 黒鍵座標を登録
     }
 
-
-    int num = 0;
+    // 88鍵盤全体の座標を保持する配列を設定
     int white = 0;
     int black = 0;
-
-    for (; num < 88; num++) {// 88鍵盤全体の座標を保持する配列を設定
+    for (int num = 0; num < 88; num++) {
         if (this->True_White(num)) {// 白鍵か黒鍵かを判定し、対応するX座標を設定
             // 白鍵
             key_x[num] = key_white_x[white];
@@ -114,15 +112,13 @@ void Analysis::Set_Color() {
 // 映像の解析を行い、txtファイルを生成する関数
 void Analysis::Analyze() {
     const static double fps = movie.Get_FPS();
-
-    int frame_count = 1;
-
-    for (;; frame = movie.Get_Next_Frame()) {
+    // 1フレームずつ処理する
+    for (int frame_count = 1;; frame = movie.Get_Next_Frame()) {
         if (frame.empty()) break;
 
         this->Check_Key(); // キーのイベントをアップデート
 
-        double time_now = ((double)frame_count / fps);
+        double time_now = ((double)frame_count / fps); // 1フレームをfpsで割ることで、時間が出る
 
         // 同時発音数が一定以下でイベントを本登録
         if (str.size() > 0 && str.size() < 30) {
@@ -140,9 +136,7 @@ void Analysis::Analyze() {
         this->active_key_sum = 0;
         cv::imshow("movie", frame);
     }
-
-    // 最後にファイルに書き出し
-    this->Output_txt();
+    this->Output_txt(); // 最後にファイルに書き出し
 }
 
 // 座標のチェックを行う関数
@@ -272,29 +266,29 @@ bool Analysis::True_White(int n) {
     n += 9;
     int a = n % 12;
     switch (a) {
-    case 0:
+    case 0: // ド
         return true;
-    case 1:
+    case 1: // #ド
         return false;
-    case 2:
+    case 2: // レ
         return true;
-    case 3:
+    case 3: // #レ
         return false;
-    case 4:
+    case 4: // ミ
         return true;
-    case 5:
+    case 5: // ファ
         return true;
-    case 6:
+    case 6: // #ファ
         return false;
-    case 7:
+    case 7: // ソ
         return true;
-    case 8:
+    case 8: // #ソ
         return false;
-    case 9:
+    case 9: // ラ
         return true;
-    case 10:
+    case 10: // #ラ
         return false;
-    case 11:
+    case 11: // シ
         return true;
 
     default:
