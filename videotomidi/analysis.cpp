@@ -95,9 +95,7 @@ void Analysis::Set_Coodinates() {
     // Y座標(鍵盤は、横に並んでいるので縦軸は変更なし)
     key_white_y = 665;
     // X座標を計算
-    for (int i = 0; i < 52; i++) {
-        key_white_x[i] = (24.5 / 2.0) + i * 24.6;
-    }
+    for (int i = 0; i < 52; i++) key_white_x[i] = (24.5 / 2.0) + i * 24.6;
 
     // 黒鍵
     // Y座標(鍵盤は、横に並んでいるので縦軸は変更なし)
@@ -110,18 +108,10 @@ void Analysis::Set_Coodinates() {
     double W_2 = 29.3; // 間に黒鍵がある
     for (int i = 1; i < 36; i++) {
         switch (k) {
-        case 0: // #ド
-            def += W_1;
-            break;
-        case 1: // #レ
-            def += W_2;
-            break;
-        case 2: // #ファ
-            def += W_1;
-            break;
-        case 3: // #ソ
-            def += W_2;
-            break;
+        case 0: def += W_1; break; // #ド
+        case 1: def += W_2; break; // #レ
+        case 2: def += W_1; break; // #ファ
+        case 3: def += W_2; break; // #ソ
         case 4: // #ラ
             def += W_2;
             k = -1;// 1オクターブ分完了 黒鍵変数リセット
@@ -132,8 +122,7 @@ void Analysis::Set_Coodinates() {
     }
 
     // 88鍵盤全体の座標を保持する配列を設定
-    int white = 0;
-    int black = 0;
+    int white = 0, black = 0;
     for (int num = 0; num < 88; num++) {
         if (True_White(num)) { // 白鍵か黒鍵かを判定し、対応するX座標を設定
             // 白鍵
@@ -184,7 +173,7 @@ void Analysis::Analyze() {
 
         Check_Key(); // キーのイベントをアップデート
 
-        double time_now = ((double)frame_count / fps); // 1フレームをfpsで割ることで、時間が出る
+        double time_now = (double)frame_count / fps; // 1フレームをfpsで割ることで、時間が出る
 
         // 同時発音数が一定以下でイベントを本登録
         if (str.size() > 0 && str.size() < 30) {
@@ -313,33 +302,20 @@ bool Analysis::True_White(int n) {
     n += 9;
     int a = n % 12;
     switch (a) {
-    case 0: // ド
-        return true;
-    case 1: // #ド
-        return false;
-    case 2: // レ
-        return true;
-    case 3: // #レ
-        return false;
-    case 4: // ミ
-        return true;
-    case 5: // ファ
-        return true;
-    case 6: // #ファ
-        return false;
-    case 7: // ソ
-        return true;
-    case 8: // #ソ
-        return false;
-    case 9: // ラ
-        return true;
-    case 10: // #ラ
-        return false;
-    case 11: // シ
-        return true;
+    case 0: return true;   // ド
+    case 1: return false;  // #ド
+    case 2: return true;   // レ
+    case 3: return false;  // #レ
+    case 4: return true;   // ミ
+    case 5: return true;   // ファ
+    case 6: return false;  // #ファ
+    case 7: return true;   // ソ
+    case 8: return false;  // #ソ
+    case 9: return true;   // ラ
+    case 10: return false; // #ラ
+    case 11: return true;  // シ
 
-    default:
-        break;
+    default: break;
     }
 }
 
